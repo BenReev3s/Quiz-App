@@ -14,7 +14,7 @@ db.serialize(() => {
             id INTEGER PRIMARY KEY,
             username TEXT NOT NULL,
             score INTEGER NOT NULL,
-            created_at TIMESTAMP DEFAULT NOT NULL
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         `);
 });

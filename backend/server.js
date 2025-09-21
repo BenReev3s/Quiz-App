@@ -65,6 +65,6 @@ app.get('./leaderboard', (res, req) => {
     );
 });
 
-app.listen(PROTOCOL, () => {
+app.listen(port, () => {
     console.log(`server running at http://localhost${port}`);
 });
