@@ -5,11 +5,11 @@ const db = require('./db')
 const app = express();
 const port = 8080;
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use(express.static('frontend'));
 
-app.get('/questions', (red, res) => {
+app.get('/questions', (req, res) => {
     db.get(
         `SELECT * FROM questions ORDER BY RANDOM() LIMIT 1`,
         (err, row) => {
@@ -22,7 +22,7 @@ app.get('/questions', (red, res) => {
     );
 });
 
-app.post('/submit', (res, req) => {
+app.post('/submit', (req, res) => {
     const { username, questionId, answer } = req.body;
     db.get(
         `SELECT correct_answer FROM questions WHERE id = ?`,
@@ -36,7 +36,7 @@ app.post('/submit', (res, req) => {
 
             if (isCorrect) {
                 db.run(
-                    `INSERT INTO scores (username, score) VLAUES (?, 1)`,
+                    `INSERT INTO scores (username, score) VALUES (?, 1)`,
                     [username],
                     function (err) {
                         if (err) {
