@@ -6,6 +6,12 @@ h1 {
     display: grid;
     place-items: center;
     gap: 20px;
+    max-width: 500;
+    margin: 0 auto;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    background: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .answer-row {
@@ -23,7 +29,7 @@ h1 {
 }
 
 .answer-row button {
-    padding: 8px, 16px;
+    padding: 8px 16px;
     font-size: 16px;
     cursor: pointer;
 }
@@ -35,4 +41,28 @@ h1 {
     margin-top: 15px;
 }
 
-.leaderboard {}
+#leaderboard {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    text-align: center;
+}
+
+#leaderboard th,
+#leaderboard td {
+    border: 1px solid #f9f9f9;
+    padding: 8px;
+}
+
+#leaderboard th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+}
+
+.correct {
+    color: green;
+}
+
+.wrong {
+    color: red;
+}
