@@ -7,6 +7,8 @@ const port = 8080;
 
 app.use(bodyParser.json());
 
+app.use(express.static('frontend'));
+
 app.get('/questions', (red, res) => {
     db.get(
         `SELECT * FROM questions ORDER BY RANDOM() LIMIT 1`,

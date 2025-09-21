@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <main>
+        <div class="container">
+            <h1>Quiz App</h1>
+            <div class="question-area">
+                <div id="question"></div>
+
+                <div class="answer-row">
+                    <input type="text" id="answer">
+                    <button id="submitBtn">Submit</button>
+                </div>
+                <p id="feedback">Feedback: </p>
+            </div>
+
+            <div class="leaaderboard-area">
+                <h2>Leaderboard</h2>
+                <table id="leaderboard">
+                    <thread>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Score</th>
+                        </tr>
+                    </thread>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

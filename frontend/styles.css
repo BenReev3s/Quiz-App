@@ -1,0 +1,38 @@
+h1 {
+    text-align: center;
+}
+
+.container {
+    display: grid;
+    place-items: center;
+    gap: 20px;
+}
+
+.answer-row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.answer-row input {
+    padding: 8px;
+    font-size: 16px;
+    flex: 1;
+}
+
+.answer-row button {
+    padding: 8px, 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#feedback {
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    margin-top: 15px;
+}
+
+.leaderboard {}
