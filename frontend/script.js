@@ -2,7 +2,8 @@
 const submitBtn = document.getElementById('submitBtn');
 const feedback = document.getElementById('feedback');
 const question = document.getElementById('question');
-const answerInput = document.getElementById('answer')
+const answerInput = document.getElementById('answer');
+const leaderboard = document.getElementById('leaderboard-body');
 
 let currentQuestionId = null;
 
@@ -17,7 +18,7 @@ async function loadQuestion() {
     question.textContent = data.question;
 }
 
-loadQuestion()
+
 
 submitBtn.addEventListener('click', async () => {
     const user_answer = answerInput.value;
@@ -45,5 +46,41 @@ submitBtn.addEventListener('click', async () => {
     answerInput.value = ""
     setTimeout(() => {
         loadQuestion();
+        loadLeaderboard();
     }, 2000);
 })
+
+async function loadLeaderboard() {
+    const res = await fetch('/leaderboard');
+    if (!res.ok) {
+        throw new Error(`Response status: ${res.status}`);
+    }
+
+    const data = await res.json()
+
+    let rank = 0
+
+    data.forEach(player => {
+        leaderboard.innerHTML = "";
+        const row = document.createElement('tr');
+
+        const rankCell = document.createElement('td')
+        rankCell.textContent = rank += 1
+        const userCell = document.createElement('td');
+        userCell.textContent = player.username
+        const scoreCell = document.createElement('td');
+        scoreCell.textContent = player.total_score;
+
+        row.appendChild(rankCell)
+        row.appendChild(userCell)
+        row.appendChild(scoreCell)
+
+        leaderboard.appendChild(row)
+    });
+}
+
+loadQuestion()
+loadLeaderboard()
+
+
+

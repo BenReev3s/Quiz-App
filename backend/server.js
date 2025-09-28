@@ -54,9 +54,9 @@ app.post('/submit', (req, res) => {
     );
 });
 
-app.get('./leaderboard', (res, req) => {
+app.get('/leaderboard', (req, res) => {
     db.all(
-        `SELECT username, SUM(score), as total_score FROM scores GROUP BY username ORDER by total_score DESC LIMIT 10`,
+        `SELECT username, SUM(score) as total_score FROM scores GROUP BY username ORDER by total_score DESC LIMIT 10`,
         (err, rows) => {
             if (err) {
                 res.status(500).json({ error: err.message })
