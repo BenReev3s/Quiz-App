@@ -12,34 +12,41 @@
 
 <body>
     <main>
-        <div class="container">
-            <h1>Quiz App</h1>
-            <div class="question-area">
-                <div id="question"></div>
+        <div id="username-section">
+            <input type="text" id="username" placeholder="Enter your name">
+            <button id="startBtn">Start Quiz</button>
+        </div>
+        <div id="quiz-container" style="display: none;">
+            <div class="container">
+                <h1>Quiz App</h1>
+                <div class="question-area">
+                    <div id="question"></div>
 
-                <div class="answer-row">
-                    <input type="text" id="answer">
-                    <button id="submitBtn">Submit</button>
+                    <div class="answer-row">
+                        <input type="text" id="answer">
+                        <button id="submitBtn">Submit</button>
+                    </div>
+                    <p id="feedback">Feedback: </p>
                 </div>
-                <p id="feedback">Feedback: </p>
-            </div>
 
-            <div class="leaaderboard-area">
-                <h2>Leaderboard</h2>
-                <table id="leaderboard">
-                    <thread>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Player</th>
-                            <th>Score</th>
-                        </tr>
-                    </thread>
-                    <tbody id="leaderboard-body">
+                <div class="leaaderboard-area">
+                    <h2>Leaderboard</h2>
+                    <table id="leaderboard">
+                        <thread>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>Score</th>
+                            </tr>
+                        </thread>
+                        <tbody id="leaderboard-body">
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
     </main>
     <script src="script.js"></script>
 </body>

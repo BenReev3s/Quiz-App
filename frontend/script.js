@@ -4,8 +4,28 @@ const feedback = document.getElementById('feedback');
 const question = document.getElementById('question');
 const answerInput = document.getElementById('answer');
 const leaderboard = document.getElementById('leaderboard-body');
+const startBtn = document.getElementById('startBtn')
+const usernameInput = document.getElementById('username')
+const quizContainer = document.getElementById('quiz-container')
 
+let currentUser = null
 let currentQuestionId = null;
+
+//Start Quiz
+
+startBtn.addEventListener('click', () => {
+    const name = usernameInput.value.trim();
+    if (name) {
+        currentUser = name;
+        document.getElementById('username-section').style.display = 'none'
+        quizContainer.style.display = 'block'
+        loadQuestion()
+        loadLeaderboard()
+    } else {
+        alert('Please enter username to start')
+    }
+})
+
 
 // load a question to the question div
 async function loadQuestion() {
@@ -26,7 +46,7 @@ submitBtn.addEventListener('click', async () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            username: "Ben",
+            username: currentUser,
             questionId: currentQuestionId,
             answer: user_answer
         })
