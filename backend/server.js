@@ -1,6 +1,7 @@
 const express = require('express');
-const bodyParser = require('body-parser')
-const db = require('./db')
+const bodyParser = require('body-parser');
+const db = require('./db');
+const bcrypt = require('bcrypt');
 
 const app = express();
 const port = 8080;
@@ -86,6 +87,33 @@ app.get('/score/:username', (req, res) => {
             });
         }
     );
+});
+
+app.post('/register', async (req, res) => {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ error: 'Username and Password required' });
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        db.run(
+            `INSERT INTO users (username, password) VALUES (?, ?)`, [username, hashedPassword],
+            function (err) {
+                if (err) {
+                    if (err.message.includes('UNIQUE constraint')) {
+                        return res.status(400).json({ error: 'Username already exists' });
+                    }
+                    return res.status(500).json({ error: err.message });
+                }
+                res.json({ message: 'User registered succesfully', userId: this.lastID });
+            }
+        );
+    } catch (err) {
+        res.status(500).json({ errer: 'server error' })
+    }
 });
 
 app.listen(port, () => {
