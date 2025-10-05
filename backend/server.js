@@ -116,6 +116,32 @@ app.post('/register', async (req, res) => {
     }
 });
 
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ error: "Username and password is required" });
+    }
+    db.get(`SELECT password FROM users WHERE username = ?`, [username],
+        async (err, row) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            if (!row) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+            const isValid = await bcrypt.compare(password, row.password);
+            if (isValid) {
+                res.json({ message: 'Login Succesful', username })
+            }
+            else {
+                res.status(401).json({ error: 'Invalid credentials' })
+            }
+        }
+    );
+});
+
 app.listen(port, () => {
     console.log(`server running at http://localhost${port}`);
 });
