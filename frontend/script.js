@@ -6,25 +6,57 @@ const answerInput = document.getElementById('answer');
 const leaderboard = document.getElementById('leaderboard-body');
 const startBtn = document.getElementById('startBtn')
 const usernameInput = document.getElementById('username')
-const quizContainer = document.getElementById('quiz-container')
+const quizContainer = document.getElementById('quiz-container');
+const changeUsernameBtn = document.getElementById('changeUserButton');
+const userScore = document.getElementById('user-score')
 
 let currentUser = null
 let currentQuestionId = null;
 
 //Start Quiz
-
 startBtn.addEventListener('click', () => {
     const name = usernameInput.value.trim();
     if (name) {
         currentUser = name;
+        localStorage.setItem('quizUser', name)
         document.getElementById('username-section').style.display = 'none'
         quizContainer.style.display = 'block'
         loadQuestion()
         loadLeaderboard()
+        loadUserScore();
     } else {
         alert('Please enter username to start')
     }
 })
+
+async function loadUserScore() {
+    if (!currentUser) return;
+    const res = await fetch(`/score/${currentUser}`);
+    if (!res.ok) {
+        console.error(`Response status: ${res.status}`);
+        return;
+    }
+    const data = await res.json();
+    userScore.textContent = `Your Score: ${data.total_score}`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const savedUser = localStorage.getItem('quizUser')
+    if (savedUser) {
+        currentUser = savedUser
+        document.getElementById('username-section').style.display = 'none';
+        quizContainer.style.display = 'block';
+        loadQuestion()
+        loadLeaderboard()
+    }
+})
+
+changeUsernameBtn.addEventListener('click', () => {
+    localStorage.removeItem('quizUser')
+    currentUser = null
+    quizContainer.style.display = 'none'
+    document.getElementById('username-section').style.display = 'block'
+});
 
 
 // load a question to the question div
@@ -58,6 +90,7 @@ submitBtn.addEventListener('click', async () => {
     if (data.correct) {
         feedback.textContent = "Correct!";
         feedback.className = ('correct');
+        loadUserScore();
     } else {
         feedback.textContent = "Incorrect!"
         feedback.className = ('incorrect')
@@ -79,9 +112,9 @@ async function loadLeaderboard() {
     const data = await res.json()
 
     let rank = 0
-
+    leaderboard.innerHTML = "";
     data.forEach(player => {
-        leaderboard.innerHTML = "";
+
         const row = document.createElement('tr');
 
         const rankCell = document.createElement('td')
@@ -99,8 +132,9 @@ async function loadLeaderboard() {
     });
 }
 
-loadQuestion()
-loadLeaderboard()
+loadQuestion();
+loadLeaderboard();
+loadUserScore();
 
 
 

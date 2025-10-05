@@ -67,6 +67,27 @@ app.get('/leaderboard', (req, res) => {
     );
 });
 
+app.get('/score/:username', (req, res) => {
+    const username = req.params.username; // get name from URL
+
+    db.get(
+        `SELECT SUM(score) as user_score FROM scores WHERE username = ?`,
+        [username],
+        (err, row) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+
+            // send JSON response
+            res.json({
+                username: username,
+                total_score: row.user_score || 0 // 0 if user has no scores yet
+            });
+        }
+    );
+});
+
 app.listen(port, () => {
     console.log(`server running at http://localhost${port}`);
 });
