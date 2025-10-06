@@ -4,30 +4,99 @@ const feedback = document.getElementById('feedback');
 const question = document.getElementById('question');
 const answerInput = document.getElementById('answer');
 const leaderboard = document.getElementById('leaderboard-body');
-const startBtn = document.getElementById('startBtn')
-const usernameInput = document.getElementById('username')
 const quizContainer = document.getElementById('quiz-container');
 const changeUsernameBtn = document.getElementById('changeUserButton');
 const userScore = document.getElementById('user-score')
 
+const username = document.getElementById('username');
+const password = document.getElementById('password');
+const loginBtn = document.getElementById('loginBtn');
+const registerBtn = document.getElementById('registerBtn');
+const authFeedback = document.getElementById('auth-feedback');
+const loginForm = document.getElementById('auth-section')
+
 let currentUser = null
 let currentQuestionId = null;
 
-//Start Quiz
-startBtn.addEventListener('click', () => {
-    const name = usernameInput.value.trim();
-    if (name) {
-        currentUser = name;
-        localStorage.setItem('quizUser', name)
-        document.getElementById('username-section').style.display = 'none'
-        quizContainer.style.display = 'block'
-        loadQuestion()
-        loadLeaderboard()
-        loadUserScore();
-    } else {
-        alert('Please enter username to start')
+registerBtn.addEventListener('click', async () => {
+    const usernameInput = username.value.trim()
+    const passwordInput = password.value.trim()
+
+    if (!username || !password) {
+        authFeedback.textContent = "Please enter a username and password"
+        authFeedback.style.color = "red";
+        return;
     }
-})
+
+    try {
+        const res = await fetch('/register', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+                username: usernameInput,
+                password: passwordInput
+            })
+        });
+        const data = await res.json()
+
+        if (res.ok) {
+            authFeedback.textContent = "Registered Successfully! Please login."
+            authFeedback.style.color = "green"
+            username.value = ""
+            password.value = ""
+            console.log("Registration successful")
+        } else {
+            authFeedback.textContent = data.error || "Registeration failed."
+            authFeedback.style.color = "red"
+        }
+    } catch (err) {
+        console.error(err);
+        authFeedback.textContent = "Server error - please try again later.";
+        authFeedback.style.color = "red";
+    }
+});
+
+loginBtn.addEventListener('click', async () => {
+    const usernameInput = username.value.trim();
+    const passwordInput = password.value.trim();
+    if (!usernameInput || !passwordInput) {
+        authFeedback.textContent = "Pleaser enter your username and password"
+        authFeedback.style.color = "red";
+        return;
+    }
+    try {
+        const res = await fetch('/login', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+                username: usernameInput,
+                password: passwordInput
+            })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            console.log('Login successful: ', data);
+            currentUser = usernameInput
+            localStorage.setItem('quizUser', usernameInput)
+            loginForm.style.display = "none";
+            quizContainer.style.display = "block"
+            loadQuestion()
+            loadLeaderboard()
+        } else {
+            authFeedback.textContent = data.error || 'Invalid Login.';
+            authFeedback.style.color = "red";
+        }
+    } catch (err) {
+        console.error(err)
+        authFeedback.textContent = "Server error during login"
+    }
+});
+
+registerBtn.addEventListener('click', async () => {
+
+});
 
 async function loadUserScore() {
     if (!currentUser) return;
@@ -40,22 +109,11 @@ async function loadUserScore() {
     userScore.textContent = `Your Score: ${data.total_score}`;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const savedUser = localStorage.getItem('quizUser')
-    if (savedUser) {
-        currentUser = savedUser
-        document.getElementById('username-section').style.display = 'none';
-        quizContainer.style.display = 'block';
-        loadQuestion()
-        loadLeaderboard()
-    }
-})
-
 changeUsernameBtn.addEventListener('click', () => {
     localStorage.removeItem('quizUser')
     currentUser = null
     quizContainer.style.display = 'none'
-    document.getElementById('username-section').style.display = 'block'
+    loginForm.style.display = 'block'
 });
 
 
@@ -69,7 +127,6 @@ async function loadQuestion() {
     currentQuestionId = data.id;
     question.textContent = data.question;
 }
-
 
 
 submitBtn.addEventListener('click', async () => {

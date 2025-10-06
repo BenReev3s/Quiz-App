@@ -12,9 +12,16 @@
 
 <body>
     <main>
-        <div id="username-section">
-            <input type="text" id="username" placeholder="Enter your name">
-            <button id="startBtn">Start Quiz</button>
+        <div id="auth-section">
+            <h2>Login/Register</h2>
+            <input type="text" id="username" placeholder="Enter username">
+            <input type="password" id="password" , placeholder="Enter password">
+
+            <div class="auth-buttons">
+                <button id="loginBtn">Login</button>
+                <button id="registerBtn">Register</button>
+            </div>
+            <p id="auth-feedback"></p>
         </div>
         <div id="quiz-container" style="display: none;">
             <div class="container">

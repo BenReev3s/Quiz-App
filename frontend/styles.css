@@ -2,16 +2,30 @@ h1 {
     text-align: center;
 }
 
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9fafb;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 2rem;
+    color: #111827;
+}
+
 .container {
-    display: grid;
-    place-items: center;
-    gap: 20px;
-    max-width: 500;
-    margin: 0 auto;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    background: #f9f9f9;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.container:hover {
+    transform: translateY(-3px);
 }
 
 .answer-row {
@@ -22,29 +36,48 @@ h1 {
     margin-top: 10px;
 }
 
-.answer-row input {
-    padding: 8px;
-    font-size: 16px;
-    flex: 1;
+h1,
+h2 {
+    margin-bottom: 1rem;
+    color: #1e3a8a;
 }
 
-.answer-row button {
-    padding: 8px 16px;
-    font-size: 16px;
+input {
+    width: 100%;
+    padding: 0.7rem;
+    margin-bottom: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+button {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
     cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #2563eb;
+    transform: scale(1.05);
 }
 
 #feedback {
     font-size: 20px;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    margin-top: 15px;
+    margin-top: 1rem;
 }
 
 #leaderboard {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
+    margin-top: 1.5rem;
     text-align: center;
 }
 
@@ -52,6 +85,7 @@ h1 {
 #leaderboard td {
     border: 1px solid #f9f9f9;
     padding: 8px;
+
 }
 
 #leaderboard th {
@@ -60,9 +94,30 @@ h1 {
 }
 
 .correct {
-    color: green;
+    color: #10b981;
+    font-weight: 600;
 }
 
 .wrong {
     color: red;
+    font-weight: 600;
+}
+
+#auth-section {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+#auth-feedback {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+#changeUserButton {
+    background-color: #ef4444;
+    margin-top: 1rem;
 }

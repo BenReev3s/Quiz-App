@@ -1,6 +1,7 @@
 const express = require('express');
-const bodyParser = require('body-parser')
-const db = require('./db')
+const bodyParser = require('body-parser');
+const db = require('./db');
+const bcrypt = require('bcrypt');
 
 const app = express();
 const port = 8080;
@@ -84,6 +85,59 @@ app.get('/score/:username', (req, res) => {
                 username: username,
                 total_score: row.user_score || 0 // 0 if user has no scores yet
             });
+        }
+    );
+});
+
+app.post('/register', async (req, res) => {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ error: 'Username and Password required' });
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        db.run(
+            `INSERT INTO users (username, password) VALUES (?, ?)`, [username, hashedPassword],
+            function (err) {
+                if (err) {
+                    if (err.message.includes('UNIQUE constraint')) {
+                        return res.status(400).json({ error: 'Username already exists' });
+                    }
+                    return res.status(500).json({ error: err.message });
+                }
+                res.json({ message: 'User registered succesfully', userId: this.lastID });
+            }
+        );
+    } catch (err) {
+        res.status(500).json({ errer: 'server error' })
+    }
+});
+
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).json({ error: "Username and password is required" });
+    }
+    db.get(`SELECT password FROM users WHERE username = ?`, [username],
+        async (err, row) => {
+            if (err) {
+                res.status(500).json({ error: err.message });
+                return;
+            }
+            if (!row) {
+                return res.status(404).json({ error: 'User not found' });
+            }
+            const isValid = await bcrypt.compare(password, row.password);
+            if (isValid) {
+                res.json({ message: 'Login Succesful', username })
+            }
+            else {
+                res.status(401).json({ error: 'Invalid credentials' })
+            }
         }
     );
 });
