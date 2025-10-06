@@ -13,6 +13,7 @@ const password = document.getElementById('password');
 const loginBtn = document.getElementById('loginBtn');
 const registerBtn = document.getElementById('registerBtn');
 const authFeedback = document.getElementById('auth-feedback');
+const loginForm = document.getElementById('auth-section')
 
 let currentUser = null
 let currentQuestionId = null;
@@ -79,6 +80,8 @@ loginBtn.addEventListener('click', async () => {
             console.log('Login successful: ', data);
             currentUser = usernameInput
             localStorage.setItem('quizUser', usernameInput)
+            loginForm.style.display = "none";
+            quizContainer.style.display = "block"
             loadQuestion()
             loadLeaderboard()
         } else {
@@ -110,7 +113,7 @@ changeUsernameBtn.addEventListener('click', () => {
     localStorage.removeItem('quizUser')
     currentUser = null
     quizContainer.style.display = 'none'
-
+    loginForm.style.display = 'block'
 });
 
 
@@ -124,7 +127,6 @@ async function loadQuestion() {
     currentQuestionId = data.id;
     question.textContent = data.question;
 }
-
 
 
 submitBtn.addEventListener('click', async () => {
